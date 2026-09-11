@@ -35,7 +35,7 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [focused, setFocused] = useState(false);
   const startX = useRef(0);
-  const [slideSeconds, setSlideSeconds] = useState(6);
+  const [slideSeconds, setSlideSeconds] = useState(0.5);
   const slideDuration = slideSeconds * 1000;
   const playing = !paused && !reduced && !hidden && !dragging && !dialogOpen && !menuOpen && !focused;
   const go = (index: number) => { setActive((index + scenes.length) % scenes.length); setPaused(true); };
@@ -66,11 +66,11 @@ export default function Home() {
       </TabsList>
       <div className="timing-control">
         <div className="timing-label"><span id="slide-timing-label">Time per slide</span><output>{slideSeconds} s</output></div>
-        <SliderPrimitive.Root className="timing-slider" min={2} max={12} step={0.5} value={[slideSeconds]} onValueChange={([seconds]) => setSlideSeconds(seconds)}>
+        <SliderPrimitive.Root className="timing-slider" min={0.5} max={12} step={0.5} value={[slideSeconds]} onValueChange={([seconds]) => setSlideSeconds(seconds)}>
           <SliderPrimitive.Track className="timing-track"><SliderPrimitive.Range className="timing-range" /></SliderPrimitive.Track>
           <SliderPrimitive.Thumb className="timing-thumb" aria-labelledby="slide-timing-label" aria-valuetext={`${slideSeconds} seconds per slide`} />
         </SliderPrimitive.Root>
-        <div className="timing-limits" aria-hidden="true"><span>2 s · Faster</span><span>12 s · Slower</span></div>
+        <div className="timing-limits" aria-hidden="true"><span>0.5 s · Faster</span><span>12 s · Slower</span></div>
       </div>
     </div>
     <div className="phone-space" style={{ "--phone-scale": phoneScale } as CSSProperties}>
@@ -79,7 +79,7 @@ export default function Home() {
         <div className="phone-screen" ref={setPhonePortal}>
           <div className="phone-status" aria-hidden="true"><span>9:41</span><div className="dynamic-island" /><div className="status-icons"><Signal /><Wifi /><BatteryFull /></div></div>
           <TabsContent value={variation} className="phone-content">
-          <main className={`onboarding variation-${variation === "context" ? "background variation-context" : variation}`} style={{ "--slide-duration": `${slideDuration}ms` } as CSSProperties}>
+          <main className={`onboarding variation-${variation === "context" ? "background variation-context" : variation}`} style={{ "--slide-duration": `${slideDuration}ms`, "--scene-fade": `${Math.min(600, slideDuration * 0.4)}ms` } as CSSProperties}>
             {variation === "context" && <ContextBackdrop active={active} />}
             {variation === "background" && <div className="full-background" aria-hidden="true">
               {scenes.map((scene, i) => <div key={scene.image} className={`background-scene ${active === i ? "active" : ""}`}>

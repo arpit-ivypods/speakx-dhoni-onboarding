@@ -160,3 +160,5 @@
 .timing-thumb:active { cursor: grabbing; }
 .timing-thumb:focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
 .timing-limits { display: flex; justify-content: space-between; color: #babfcc; font-size: 12px; line-height: 16px; }
+
+.scene, .background-scene { transition-duration: var(--scene-fade, 600ms); }
