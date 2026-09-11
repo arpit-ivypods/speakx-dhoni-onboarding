@@ -56,3 +56,19 @@ Saved asset: `public/images/context/airport.png`
 
 Scenario prompt: MS Dhoni with passport, boarding pass and rolling suitcase in a clearly recognizable AIRPORT TERMINAL. Show large terminal windows with a visible airplane outside, rows of gate seats and a departures display with abstract rows, plus a few distant travelers. Keep the airplane, suitcase, gate seating and Dhoni all legible in the narrow composition.
 
+
+
+## Variant 1 clean card artwork
+
+Built-in image editing. Original posters preserved. All card headline and footer copy is rendered in React.
+
+Prompt used for each of the six original images:
+
+Edit this exact supplied SpeakX portrait poster. Remove only all overlaid promotional typography: the large white/orange headline at top, the lower 'Feel the change in just 1 week', 'TRUSTED BY 1 CRORE+ LEARNERS', and both laurel ornaments. Seamlessly reconstruct the underlying photographic/background pixels where removed. Keep the top black/dark quiet area and bottom dark gradient, but entirely free of poster text. Preserve the exact photograph, Dhoni's identity/face, hairstyle, expression, pose, hands, clothing, small embroidered SpeakX jacket logo, other people, objects, setting, lighting, framing and full original 1080:2052 portrait aspect ratio. Do not recompose, zoom, crop or add objects. This is a minimal text-removal edit, delivering the same image with the promotional text removed so HTML captions can replace it. Output a single clean portrait image with no new text.
+
+- `public/images/card/01_01_ptm.png` from `/Users/arpitmittal/.codex/generated_images/01a08f88-fce0-7703-84a1-41a8d1b560cf/exec-788708ac-77a9-437b-9582-fe0368451926.png`
+- `public/images/card/02_02_sofa.png` from `/Users/arpitmittal/.codex/generated_images/01a08f88-fce0-7703-84a1-41a8d1b560cf/exec-278bd127-5cd5-4c33-9f98-73e098efc11a.png`
+- `public/images/card/03_04_handshake.png` from `/Users/arpitmittal/.codex/generated_images/01a08f88-fce0-7703-84a1-41a8d1b560cf/exec-6efed4e9-ca16-482c-b5ef-5d67514ab16c.png`
+- `public/images/card/04_05_whiteboard.png` from `/Users/arpitmittal/.codex/generated_images/01a08f88-fce0-7703-84a1-41a8d1b560cf/exec-ad371ac4-2b2f-459f-814b-f861e43a872c.png`
+- `public/images/card/05_03_library.png` from `/Users/arpitmittal/.codex/generated_images/01a08f88-fce0-7703-84a1-41a8d1b560cf/exec-78488497-d005-4f28-b3c4-0b39c215b2fa.png`
+- `public/images/card/06_06_airport.png` from `/Users/arpitmittal/.codex/generated_images/01a08f88-fce0-7703-84a1-41a8d1b560cf/exec-383a1095-9be9-48ad-9a75-4b154f30d31e.png`

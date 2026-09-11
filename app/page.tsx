@@ -103,7 +103,7 @@ export default function Home() {
         onPointerCancel={() => { setDragging(false); setDrag(0); }}>
         <div className="scenes" style={{ transform: `translateX(${drag}px)` }}>
           {scenes.map((scene, i) => <div key={scene.image} className={`scene ${active === i ? "active" : ""}`} aria-hidden={active !== i}>
-            {variation === "card" && <div className="photo"><img src={`/images/${scene.image}`} alt={scene.alt} draggable={false} fetchPriority={i === 0 ? "high" : "auto"} /></div>}
+            {variation === "card" && <div className="photo"><img src={`/images/card/${scene.image}`} alt={scene.alt} draggable={false} fetchPriority={i === 0 ? "high" : "auto"} /></div>}
             {variation === "card" && <div className="photo-shade" />}
             <div className="hero-title"><h1>{scene.line}<br /><span>{scene.accent}</span></h1></div>
           </div>)}
