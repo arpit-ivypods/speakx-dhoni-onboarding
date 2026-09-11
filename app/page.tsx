@@ -4,7 +4,7 @@ import { ArrowRight, ChevronLeft, ChevronRight, MoreVertical, Pause, Play, Mail,
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogPortal, DialogOverlay, DialogClose, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuPortal, DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { Dialog as DialogPrimitive, DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
+import { Dialog as DialogPrimitive, DropdownMenu as DropdownMenuPrimitive, Slider as SliderPrimitive } from "radix-ui";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ContextBackdrop } from "./context-backdrop";
 import { SupportContent, type SupportPanel } from "./support-content";
@@ -35,11 +35,12 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [focused, setFocused] = useState(false);
   const startX = useRef(0);
-  const slideDuration = 6000;
+  const [slideSeconds, setSlideSeconds] = useState(6);
+  const slideDuration = slideSeconds * 1000;
   const playing = !paused && !reduced && !hidden && !dragging && !dialogOpen && !menuOpen && !focused;
   const go = (index: number) => { setActive((index + scenes.length) % scenes.length); setPaused(true); };
   useEffect(() => {
-    const resize = () => setPhoneScale(Math.min(1, (window.innerWidth - 32) / 414, Math.max(360, window.innerHeight - (window.innerWidth <= 560 ? 184 : 156)) / 868));
+    const resize = () => setPhoneScale(Math.min(1, (window.innerWidth - 32) / 414, Math.max(360, window.innerHeight - (window.innerWidth <= 560 ? 260 : 232)) / 868));
     resize(); window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
   }, []);
@@ -63,6 +64,14 @@ export default function Home() {
         <TabsTrigger value="background"><span>02</span> Full background</TabsTrigger>
         <TabsTrigger value="context"><span>03</span> Scene context</TabsTrigger>
       </TabsList>
+      <div className="timing-control">
+        <div className="timing-label"><span id="slide-timing-label">Time per slide</span><output>{slideSeconds} s</output></div>
+        <SliderPrimitive.Root className="timing-slider" min={2} max={12} step={0.5} value={[slideSeconds]} onValueChange={([seconds]) => setSlideSeconds(seconds)}>
+          <SliderPrimitive.Track className="timing-track"><SliderPrimitive.Range className="timing-range" /></SliderPrimitive.Track>
+          <SliderPrimitive.Thumb className="timing-thumb" aria-labelledby="slide-timing-label" aria-valuetext={`${slideSeconds} seconds per slide`} />
+        </SliderPrimitive.Root>
+        <div className="timing-limits" aria-hidden="true"><span>2 s · Faster</span><span>12 s · Slower</span></div>
+      </div>
     </div>
     <div className="phone-space" style={{ "--phone-scale": phoneScale } as CSSProperties}>
       <div className="phone-frame">
@@ -114,7 +123,7 @@ export default function Home() {
         <button className="edge-arrow next" aria-label="Next slide" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()} onClick={() => go(active + 1)}><ChevronRight /></button>
       </div>
       <div className="carousel-controls">
-        <div className="pagination" aria-label="Choose a slide">{scenes.map((s, i) => <button key={s.image} aria-label={`Show ${s.label}`} aria-current={i === active ? "true" : undefined} className={`dot ${i === active ? "selected" : ""}`} onClick={() => go(i)}><span>{i === active && <i key={`${active}-${playing}`} className={playing ? "progress playing" : "progress"} />}</span></button>)}</div>
+        <div className="pagination" aria-label="Choose a slide">{scenes.map((s, i) => <button key={s.image} aria-label={`Show ${s.label}`} aria-current={i === active ? "true" : undefined} className={`dot ${i === active ? "selected" : ""}`} onClick={() => go(i)}><span>{i === active && <i key={`${active}-${playing}-${slideDuration}`} className={playing ? "progress playing" : "progress"} />}</span></button>)}</div>
         {!reduced && <button className="pause-button" aria-label={paused ? "Play carousel" : "Pause carousel"} aria-pressed={paused} onClick={() => { setPaused(v => !v); setFocused(false); }}>{paused ? <Play /> : <Pause />}</button>}
       </div>
       <p className="sr-only" aria-live={playing ? "off" : "polite"}>{scenes[active].line} {scenes[active].accent} {active + 1} of {scenes.length}.</p>
