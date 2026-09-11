@@ -121,3 +121,31 @@
 .support-link { color: #ffb890; text-decoration: underline; text-underline-offset: 4px; font-size: 16px; }
 .support-faq [data-slot=accordion-trigger] { font-size: 16px; line-height: 24px; font-weight: 600; }
 .support-faq [data-slot=accordion-content] { color: var(--muted-foreground); font-size: 16px; line-height: 24px; }
+
+/* First-run hierarchy: one benefit, one action, one quiet trust line. */
+.phone-screen .topbar { margin-bottom: 16px; }
+.phone-screen .sign-in[data-slot=button] { min-height: 44px; font-size: 16px; padding: 0 16px; }
+.phone-screen .icon-button[data-slot=button] { width: 44px; height: 44px; }
+.phone-screen .hero-title { top: 28px; left: 20px; right: 20px; opacity: 1; transform: none; pointer-events: none; }
+.phone-screen .hero-title h1 { margin: 0; font-size: 34px; line-height: 42px; letter-spacing: -.8px; }
+.phone-screen .hero-title .headline-context { display: block; color: #ffab7a; font-size: 30px; line-height: 38px; letter-spacing: -.6px; animation: headline-fade 300ms var(--ease) both; }
+.phone-screen .variation-background .hero-title { top: auto; bottom: 16px; left: 8px; right: 8px; text-shadow: 0 2px 16px #0008; }
+.phone-screen .variation-background .hero-title h1 { font-size: 36px; line-height: 44px; letter-spacing: -.8px; }
+.phone-screen .variation-background .hero-title .headline-context { font-size: 32px; line-height: 40px; }
+.photo-shade { background: linear-gradient(180deg, #0a0b0ffa 0%, #0a0b0fd9 14%, #0a0b0f33 32%, transparent 48%, transparent 76%, #0a0b0f99 100%); }
+.full-background-shade { background: linear-gradient(180deg, #0a0b0f9c 0%, #0a0b0f22 23%, #0a0b0f0a 42%, #0a0b0f85 60%, #0a0b0ff5 76%, #0a0b0f 100%); }
+.context-background-shade { background: linear-gradient(180deg, #0a0b0f8c 0%, #0a0b0f15 20%, transparent 30%, transparent 49%, #0a0b0f70 62%, #0a0b0ff5 77%, #0a0b0f 100%); }
+.phone-screen .carousel-controls { height: 56px; padding-right: 44px; }
+.dot { width: 44px; height: 48px; }
+.dot.selected { width: 52px; }
+.dot > span { width: 7px; height: 7px; background: #ffffff75; }
+.dot.selected > span { width: 28px; height: 7px; background: #ffffff60; }
+.pause-button { right: 0; height: 44px; width: 44px; color: #d1d3db; }
+.pause-button svg { width: 18px; height: 18px; }
+.edge-arrow { width: 44px; height: 44px; }
+.phone-screen .bottom-area { padding: 8px 8px 0; animation: none; }
+.phone-screen .bottom-area > .trust-note { margin: 14px 0 0; font-size: 14px; line-height: 20px; letter-spacing: 0; color: #c3c6d0; }
+.trust-note strong { font-weight: 600; color: #e3e5eb; }
+.phone-screen .primary-cta[data-slot=button] { height: 60px; }
+.photo img, .clean-photo { transition-duration: 6000ms; }
+@keyframes headline-fade { from { opacity: 0; } to { opacity: 1; } }

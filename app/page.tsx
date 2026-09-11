@@ -10,18 +10,18 @@ import { ContextBackdrop } from "./context-backdrop";
 import { SupportContent, type SupportPanel } from "./support-content";
 
 const scenes = [
-  { image: "01_01_ptm.png", line: "Talk to anyone,", accent: "anywhere", label: "Everyday conversations", alt: "MS Dhoni talking with parents in a classroom" },
-  { image: "friends-family.png", line: "Speak with your", accent: "Friends and Family", label: "Friends and family", alt: "MS Dhoni enjoying a conversation with friends and family over tea in a living room" },
-  { image: "03_04_handshake.png", line: "Crack your next", accent: "job interview", label: "Job interviews", alt: "MS Dhoni reaching out for a handshake in an office" },
-  { image: "04_05_whiteboard.png", line: "Speak up in", accent: "office meetings", label: "Office meetings", alt: "MS Dhoni presenting at an office whiteboard" },
-  { image: "05_03_library.png", line: "Ace your exams", accent: "& college life", label: "College life", alt: "MS Dhoni holding books in a library" },
-  { image: "06_06_airport.png", line: "Travel the world", accent: "without fear", label: "Travel conversations", alt: "MS Dhoni with a passport at an airport" },
+  { image: "01_01_ptm.png", line: "Speak English", accent: "with confidence.", label: "Everyday conversations", alt: "MS Dhoni talking with parents in a classroom" },
+  { image: "friends-family.png", line: "Speak English", accent: "with friends & family.", label: "Friends and family", alt: "MS Dhoni enjoying a conversation with friends and family over tea in a living room" },
+  { image: "03_04_handshake.png", line: "Speak English", accent: "in interviews.", label: "Job interviews", alt: "MS Dhoni reaching out for a handshake in an office" },
+  { image: "04_05_whiteboard.png", line: "Speak English", accent: "at work.", label: "Office meetings", alt: "MS Dhoni presenting at an office whiteboard" },
+  { image: "05_03_library.png", line: "Speak English", accent: "at college.", label: "College life", alt: "MS Dhoni holding books in a library" },
+  { image: "06_06_airport.png", line: "Speak English", accent: "anywhere.", label: "Travel conversations", alt: "MS Dhoni with a passport at an airport" },
 ];
 export default function Home() {
   const [variation, setVariation] = useState("context");
   const [phoneScale, setPhoneScale] = useState(.8);
   const [phonePortal, setPhonePortal] = useState<HTMLDivElement | null>(null);
-  const [active, setActive] = useState(2);
+  const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -35,9 +35,9 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [focused, setFocused] = useState(false);
   const startX = useRef(0);
-  const slideDuration = variation === "context" ? 4800 : 3600;
+  const slideDuration = 6000;
   const playing = !paused && !reduced && !hidden && !dragging && !dialogOpen && !menuOpen && !focused;
-  const go = (index: number) => setActive((index + scenes.length) % scenes.length);
+  const go = (index: number) => { setActive((index + scenes.length) % scenes.length); setPaused(true); };
   useEffect(() => {
     const resize = () => setPhoneScale(Math.min(1, (window.innerWidth - 32) / 414, Math.max(360, window.innerHeight - (window.innerWidth <= 560 ? 184 : 156)) / 868));
     resize(); window.addEventListener("resize", resize);
@@ -107,10 +107,9 @@ export default function Home() {
           {scenes.map((scene, i) => <div key={scene.image} className={`scene ${active === i ? "active" : ""}`} aria-hidden={active !== i}>
             {variation === "card" && <div className="photo"><img src={`/images/card/${scene.image}`} alt={scene.alt} draggable={false} fetchPriority={i === 0 ? "high" : "auto"} /></div>}
             {variation === "card" && <div className="photo-shade" />}
-            <div className="hero-title"><h1>{scene.line}<br /><span>{scene.accent}</span></h1></div>
           </div>)}
         </div>
-        <div className="hero-bottom"><p>Feel the change in just <strong>1 week</strong></p><div className="trust"><span className="trust-rule" /><span>Trusted by <strong>1 crore+ learners</strong></span><span className="trust-rule" /></div></div>
+        <div className="hero-title"><h1>Speak English<span className="headline-context" key={active}>{scenes[active].accent}</span></h1></div>
         <button className="edge-arrow previous" aria-label="Previous slide" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()} onClick={() => go(active - 1)}><ChevronLeft /></button>
         <button className="edge-arrow next" aria-label="Next slide" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()} onClick={() => go(active + 1)}><ChevronRight /></button>
       </div>
@@ -118,17 +117,17 @@ export default function Home() {
         <div className="pagination" aria-label="Choose a slide">{scenes.map((s, i) => <button key={s.image} aria-label={`Show ${s.label}`} aria-current={i === active ? "true" : undefined} className={`dot ${i === active ? "selected" : ""}`} onClick={() => go(i)}><span>{i === active && <i key={`${active}-${playing}`} className={playing ? "progress playing" : "progress"} />}</span></button>)}</div>
         {!reduced && <button className="pause-button" aria-label={paused ? "Play carousel" : "Pause carousel"} aria-pressed={paused} onClick={() => { setPaused(v => !v); setFocused(false); }}>{paused ? <Play /> : <Pause />}</button>}
       </div>
-      <p className="sr-only" aria-live={playing ? "off" : "polite"}>{scenes[active].line} {scenes[active].accent}. {active + 1} of {scenes.length}.</p>
+      <p className="sr-only" aria-live={playing ? "off" : "polite"}>{scenes[active].line} {scenes[active].accent} {active + 1} of {scenes.length}.</p>
     </section>
-    <footer className="bottom-area"><p>Your next chapter starts with confidence.</p><Button className="primary-cta" onClick={() => { setGoal(null); setStarted(false); setDialog("start"); }}>Get Started <ArrowRight /></Button><span className="footer-note">A little practice. A world of possibilities.</span></footer>
+    <footer className="bottom-area"><Button className="primary-cta" onClick={() => { setGoal(null); setStarted(false); setDialog("start"); }}>Get Started <ArrowRight /></Button><p className="trust-note">Trusted by <strong>1 crore+ learners</strong></p></footer>
     <Dialog open={dialogOpen} onOpenChange={open => { if (!open) setDialog(null); }}>
       <DialogPortal container={phonePortal}>
         <DialogOverlay className="phone-overlay" />
         <DialogPrimitive.Content className="onboarding-dialog" data-slot="dialog-content">
         <img src="/speakx.svg" alt="SpeakX" width="104" height="28" className="dialog-logo" />
         {dialog === "start" ? <>
-          <DialogTitle className="dialog-title">{started ? "Your next chapter awaits." : "Where will your confidence take you?"}</DialogTitle>
-          <DialogDescription className="dialog-description">{started ? `You chose ${scenes[goal ?? 0].label.toLowerCase()}. This preview ends here — your learning journey is the next step.` : "Choose a place to start. You can always explore more later."}</DialogDescription>
+          <DialogTitle className="dialog-title">{started ? "Your next chapter awaits." : "Where do you want to speak English?"}</DialogTitle>
+          <DialogDescription className="dialog-description">{started ? `You chose ${scenes[goal ?? 0].label.toLowerCase()}. This preview ends here — your learning journey is the next step.` : "Choose one to start."}</DialogDescription>
           {!started ? <><div className="goal-options" role="group" aria-label="Choose your learning goal">{scenes.map(scene => { const i = scenes.indexOf(scene); return <Button key={scene.label} variant="secondary" className={`goal-option ${goal === i ? "chosen" : ""}`} aria-pressed={goal === i} onClick={() => setGoal(i)}>{scene.label}{goal === i ? <Check /> : <ChevronRight />}</Button>; })}</div><Button className="primary-cta" disabled={goal === null} onClick={() => setStarted(true)}>Continue <ArrowRight /></Button></> : <Button className="primary-cta" onClick={() => { go(goal ?? 0); setDialog(null); }}>Back to exploring <ArrowRight /></Button>}
         </> : dialog === "signin" ? <><DialogTitle className="dialog-title">Welcome back.</DialogTitle><DialogDescription className="dialog-description">This is a preview of the SpeakX welcome screen. Account sign-in will be available when connected to the SpeakX app.</DialogDescription><Button className="primary-cta" onClick={() => setDialog(null)}>Keep exploring <ArrowRight /></Button></> : <SupportContent panel={dialog} />}
       <DialogClose asChild><button className="dialog-dismiss" aria-label="Close"><X /></button></DialogClose>

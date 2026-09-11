@@ -26,14 +26,14 @@ Use the tabs above the phone to switch among three layouts. The active slide and
 
 1. **Card carousel:** clean artwork with all promotional headlines and supporting captions rendered in React.
 2. **Full background:** edge-to-edge imagery with code-rendered captions. Original posters use an SVG crop; the friends-and-family scene uses dedicated full-screen artwork.
-3. **Scene context:** portrait imagery composed to preserve the surrounding setting, with no zoom animation and a 4.8-second slide interval.
+3. **Scene context:** portrait imagery composed to preserve the surrounding setting, with no zoom animation.
 
 The six scenes cover everyday conversations, friends and family, job interviews, office meetings, college life, and travel. The friends-and-family scene shows MSD in a living-room conversation.
 
 ## Interactions and design
 
 - Swipe/drag, arrow keys, previous/next controls, pagination, and pause/play.
-- Automatic rotation every 3.6 seconds in variants 1 and 2; animated image and headline transitions.
+- Automatic rotation every six seconds across all variants; manually browsing a slide pauses autoplay until Play is tapped. The core “Speak English” headline stays fixed while the situation fades in.
 - Autoplay pauses for keyboard focus, open dialogs/menus, background tabs, and dragging. Reduced-motion preferences disable autoplay and decorative motion.
 - Get Started opens a goal chooser with a local completion state. Sign In is a preview; account authentication is not connected.
 - The menu to the right of Sign In contains Contact us, FAQ, Privacy Policy, and About us. Support panels stay inside the phone; official website links open separately.
@@ -57,3 +57,7 @@ Original assets are retained. Captions remain separate from edited/generated ima
 Published at https://speakx-dhoni-onboarding.arpit710942.chatgpt.site.
 
 `.openai/hosting.json` identifies the existing Sites project. Publishing is managed through Sites; pushing to this GitHub repository does not automatically redeploy the site. Local runtime files, dependencies, build output, and environment files are excluded by `.gitignore`.
+
+## UX and readability improvements
+
+The first screen opens with “Speak English / with confidence.” Every scene uses the same two-line structure, followed by Get Started and a single trust line below the button. The one-week claim and repeated motivational taglines have been removed. Headline contrast, control sizes and spacing have been increased. The goal chooser uses a shorter, direct question.
