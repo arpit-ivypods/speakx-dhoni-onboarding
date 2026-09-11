@@ -162,3 +162,15 @@
 .timing-limits { display: flex; justify-content: space-between; color: #babfcc; font-size: 12px; line-height: 16px; }
 
 .scene, .background-scene { transition-duration: var(--scene-fade, 600ms); }
+
+/* One embedded portrait remains behind the scene layers, including between slides. */
+.full-background, .variation-card .scenes { background: radial-gradient(ellipse at 50% 35%, #513726, #111115 70%); }
+.bundled-portrait { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; pointer-events: none; }
+.bundled-portrait-card { object-fit: cover; object-position: center 15%; }
+.scene-image { position: absolute; inset: 0; opacity: 0; transition: opacity 400ms var(--ease); }
+.scene-image.image-ready { opacity: 1; }
+.image-test-control { width: 300px; max-width: calc(100vw - 64px); margin: 12px auto 0; text-align: left; }
+.image-test-control label { display: block; margin-bottom: 6px; font-size: 14px; line-height: 20px; color: #e3e5eb; }
+.image-test-control [data-slot=native-select-wrapper], .image-test-control select { width: 100%; }
+.image-test-control select { min-height: 36px; font-size: 13px; background-color: #1d1e25; color: #e3e5eb; }
+.image-test-control p { margin: 5px 0 0; min-height: 16px; font-size: 11px; line-height: 16px; color: #babfcc; }

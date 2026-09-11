@@ -1,5 +1,7 @@
 "use client";
 
+import { BundledPortrait, SceneImage, type ImageMode } from "./scene-image";
+
 const contextualImages = [
   { file: "classroom.png", alt: "Dhoni having a conversation with parents in a classroom" },
   { file: "friends-family.png", alt: "Dhoni talking with friends and family around a tea table in a warm living room" },
@@ -9,24 +11,17 @@ const contextualImages = [
   { file: "airport.png", alt: "Dhoni with luggage in an airport terminal with an airplane outside" },
 ];
 
-export function ContextBackdrop({ active }: { active: number }) {
+export function ContextBackdrop({ active, imageMode }: { active: number; imageMode: ImageMode }) {
   return (
     <div className="full-background context-background">
+      <BundledPortrait />
       {contextualImages.map((image, index) => (
         <div
           key={image.file}
           className={`background-scene ${active === index ? "active" : ""}`}
           aria-hidden={active !== index}
         >
-          <img
-            className="context-photo"
-            src={`/images/context/${image.file}`}
-            alt={image.alt}
-            width="853"
-            height="1844"
-            draggable={false}
-            fetchPriority={index === 0 ? "high" : "auto"}
-          />
+          <SceneImage src={`/images/context/${image.file}`} alt={image.alt} mode={imageMode} priority={index === 0} />
         </div>
       ))}
       <div className="context-background-shade" />

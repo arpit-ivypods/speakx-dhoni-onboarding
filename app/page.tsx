@@ -6,6 +6,8 @@ import { Dialog, DialogPortal, DialogOverlay, DialogClose, DialogTitle, DialogDe
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuPortal, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Dialog as DialogPrimitive, DropdownMenu as DropdownMenuPrimitive, Slider as SliderPrimitive } from "radix-ui";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { BundledPortrait, SceneImage, type ImageMode } from "./scene-image";
 import { ContextBackdrop } from "./context-backdrop";
 import { SupportContent, type SupportPanel } from "./support-content";
 
@@ -18,6 +20,7 @@ const scenes = [
   { image: "06_06_airport.png", line: "Speak English", accent: "anywhere.", label: "Travel conversations", alt: "MS Dhoni with a passport at an airport" },
 ];
 export default function Home() {
+  const [imageMode, setImageMode] = useState<ImageMode>("normal");
   const [variation, setVariation] = useState("context");
   const [phoneScale, setPhoneScale] = useState(.8);
   const [phonePortal, setPhonePortal] = useState<HTMLDivElement | null>(null);
@@ -40,7 +43,7 @@ export default function Home() {
   const playing = !paused && !reduced && !hidden && !dragging && !dialogOpen && !menuOpen && !focused;
   const go = (index: number) => { setActive((index + scenes.length) % scenes.length); setPaused(true); };
   useEffect(() => {
-    const resize = () => setPhoneScale(Math.min(1, (window.innerWidth - 32) / 414, Math.max(360, window.innerHeight - (window.innerWidth <= 560 ? 260 : 232)) / 868));
+    const resize = () => setPhoneScale(Math.min(1, (window.innerWidth - 32) / 414, Math.max(360, window.innerHeight - (window.innerWidth <= 560 ? 346 : 318)) / 868));
     resize(); window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
   }, []);
@@ -72,6 +75,15 @@ export default function Home() {
         </SliderPrimitive.Root>
         <div className="timing-limits" aria-hidden="true"><span>0.5 s · Faster</span><span>12 s · Slower</span></div>
       </div>
+      <div className="image-test-control">
+        <label htmlFor="image-loading-mode">Test image loading</label>
+        <NativeSelect id="image-loading-mode" value={imageMode} onChange={event => setImageMode(event.target.value as ImageMode)} aria-describedby="image-loading-help">
+          <NativeSelectOption value="normal">Normal loading</NativeSelectOption>
+          <NativeSelectOption value="slow">Slow loading · 5-second delay</NativeSelectOption>
+          <NativeSelectOption value="unavailable">Images unavailable · Show backup</NativeSelectOption>
+        </NativeSelect>
+        <p id="image-loading-help">{imageMode === "normal" ? "The bundled portrait stays until each photo is ready." : imageMode === "slow" ? "Each photo waits 5 seconds before loading." : "Only the bundled MSD portrait is shown."}</p>
+      </div>
     </div>
     <div className="phone-space" style={{ "--phone-scale": phoneScale } as CSSProperties}>
       <div className="phone-frame">
@@ -80,12 +92,11 @@ export default function Home() {
           <div className="phone-status" aria-hidden="true"><span>9:41</span><div className="dynamic-island" /><div className="status-icons"><Signal /><Wifi /><BatteryFull /></div></div>
           <TabsContent value={variation} className="phone-content">
           <main className={`onboarding variation-${variation === "context" ? "background variation-context" : variation}`} style={{ "--slide-duration": `${slideDuration}ms`, "--scene-fade": `${Math.min(600, slideDuration * 0.4)}ms` } as CSSProperties}>
-            {variation === "context" && <ContextBackdrop active={active} />}
+            {variation === "context" && <ContextBackdrop active={active} imageMode={imageMode} />}
             {variation === "background" && <div className="full-background" aria-hidden="true">
+              <BundledPortrait />
               {scenes.map((scene, i) => <div key={scene.image} className={`background-scene ${active === i ? "active" : ""}`}>
-                {scene.image === "friends-family.png" ? <img className="context-photo" src="/images/context/friends-family.png" alt="" /> : <svg viewBox="0 470 1080 1140" preserveAspectRatio="xMidYMid slice" className="clean-photo">
-                  <image href={`/images/${scene.image}`} width="1080" height="2052" />
-                </svg>}
+                <SceneImage src={scene.image === "friends-family.png" ? "/images/context/friends-family.png" : `/images/${scene.image}`} alt="" mode={imageMode} kind={scene.image === "friends-family.png" ? "context" : "poster"} priority={i === 0} />
               </div>)}
               <div className="full-background-shade" />
             </div>}
@@ -113,10 +124,11 @@ export default function Home() {
         onPointerUp={e => { const distance = e.clientX - startX.current; if (Math.abs(distance) > 40) go(active + (distance < 0 ? 1 : -1)); setDragging(false); setDrag(0); }}
         onPointerCancel={() => { setDragging(false); setDrag(0); }}>
         <div className="scenes" style={{ transform: `translateX(${drag}px)` }}>
+          {variation === "card" && <BundledPortrait card />}
           {scenes.map((scene, i) => <div key={scene.image} className={`scene ${active === i ? "active" : ""}`} aria-hidden={active !== i}>
-            {variation === "card" && <div className="photo"><img src={`/images/card/${scene.image}`} alt={scene.alt} draggable={false} fetchPriority={i === 0 ? "high" : "auto"} /></div>}
-            {variation === "card" && <div className="photo-shade" />}
+            {variation === "card" && <div className="photo"><SceneImage src={`/images/card/${scene.image}`} alt={scene.alt} mode={imageMode} kind="card" priority={i === 0} /></div>}
           </div>)}
+          {variation === "card" && <div className="photo-shade" />}
         </div>
         <div className="hero-title"><h1>Speak English<span className="headline-context" key={active}>{scenes[active].accent}</span></h1></div>
         <button className="edge-arrow previous" aria-label="Previous slide" onPointerDown={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()} onClick={() => go(active - 1)}><ChevronLeft /></button>

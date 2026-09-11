@@ -33,7 +33,7 @@ The six scenes cover everyday conversations, friends and family, job interviews,
 ## Interactions and design
 
 - Swipe/drag, arrow keys, previous/next controls, pagination, and pause/play.
-- Automatic rotation every six seconds across all variants; manually browsing a slide pauses autoplay until Play is tapped. The core “Speak English” headline stays fixed while the situation fades in.
+- Automatic rotation starts at 0.5 seconds, adjustable from 0.5–12 seconds with the preview slider across all variants; manually browsing a slide pauses autoplay until Play is tapped. The core “Speak English” headline stays fixed while the situation fades in.
 - Autoplay pauses for keyboard focus, open dialogs/menus, background tabs, and dragging. Reduced-motion preferences disable autoplay and decorative motion.
 - Get Started opens a goal chooser with a local completion state. Sign In is a preview; account authentication is not connected.
 - The menu to the right of Sign In contains Contact us, FAQ, Privacy Policy, and About us. Support panels stay inside the phone; official website links open separately.
@@ -61,3 +61,9 @@ Published at https://speakx-dhoni-onboarding.arpit710942.chatgpt.site.
 ## UX and readability improvements
 
 The first screen opens with “Speak English / with confidence.” Every scene uses the same two-line structure, followed by Get Started and a single trust line below the button. The one-week claim and repeated motivational taglines have been removed. Headline contrast, control sizes and spacing have been increased. The goal chooser uses a shorter, direct question.
+
+## Image loading fallback
+
+All three variations share one 3,310-byte WebP portrait (`public/images/fallback/msd.webp`), embedded as a data URL in `app/fallback-image.ts`. It renders with the app shell without a separate image download. `app/scene-image.tsx` loads and decodes scene photos before fading them in; failures keep the portrait visible. A CSS gradient is the base layer. Captions, navigation and Get Started remain usable.
+
+Use **Test image loading** above the phone: Normal loading, Slow loading (a five-second delay before requesting each photo), or Images unavailable (invalid image bytes exercise the image error handler). Switching back to Normal restores scene photos. The fallback avoids a separate request; loading the web app itself still requires its shell to be available. Native app packaging should include the same asset in its bundle.
