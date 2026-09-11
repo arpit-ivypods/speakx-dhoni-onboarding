@@ -2,7 +2,7 @@
 
 const contextualImages = [
   { file: "classroom.png", alt: "Dhoni having a conversation with parents in a classroom" },
-  { file: "home.png", alt: "Dhoni learning on his phone in a furnished living room" },
+  { file: "friends-family.png", alt: "Dhoni talking with friends and family around a tea table in a warm living room" },
   { file: "interview.png", alt: "Dhoni and an interviewer at a desk in a modern office" },
   { file: "meeting.png", alt: "Dhoni presenting beside a whiteboard to colleagues in a meeting room" },
   { file: "library.png", alt: "Dhoni with books among library shelves and study tables" },

@@ -1,16 +1,17 @@
 "use client";
 import { useState, useEffect, useRef, type CSSProperties } from "react";
-import { ArrowRight, ChevronLeft, ChevronRight, MoreVertical, Pause, Play, RotateCcw, Info, Check, Signal, Wifi, BatteryFull, X } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, MoreVertical, Pause, Play, Mail, CircleHelp, ShieldCheck, Info, Check, Signal, Wifi, BatteryFull, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogPortal, DialogOverlay, DialogClose, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuPortal, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Dialog as DialogPrimitive, DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ContextBackdrop } from "./context-backdrop";
+import { SupportContent, type SupportPanel } from "./support-content";
 
 const scenes = [
   { image: "01_01_ptm.png", line: "Talk to anyone,", accent: "anywhere", label: "Everyday conversations", alt: "MS Dhoni talking with parents in a classroom" },
-  { image: "02_02_sofa.png", line: "Grow every day,", accent: "at your own pace", label: "Learn at your pace", alt: "MS Dhoni relaxing on a sofa with his phone" },
+  { image: "friends-family.png", line: "Speak with your", accent: "Friends and Family", label: "Friends and family", alt: "MS Dhoni enjoying a conversation with friends and family over tea in a living room" },
   { image: "03_04_handshake.png", line: "Crack your next", accent: "job interview", label: "Job interviews", alt: "MS Dhoni reaching out for a handshake in an office" },
   { image: "04_05_whiteboard.png", line: "Speak up in", accent: "office meetings", label: "Office meetings", alt: "MS Dhoni presenting at an office whiteboard" },
   { image: "05_03_library.png", line: "Ace your exams", accent: "& college life", label: "College life", alt: "MS Dhoni holding books in a library" },
@@ -26,9 +27,9 @@ export default function Home() {
   const [hidden, setHidden] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [drag, setDrag] = useState(0);
-  const [dialog, setDialogState] = useState<"start" | "signin" | "about">("about");
+  const [dialog, setDialogState] = useState<"start" | "signin" | SupportPanel>("about");
   const [dialogOpen, setDialogOpen] = useState(false);
-  const setDialog = (value: "start" | "signin" | "about" | null) => { if (value) setDialogState(value); setDialogOpen(value !== null); };
+  const setDialog = (value: "start" | "signin" | SupportPanel | null) => { if (value) setDialogState(value); setDialogOpen(value !== null); };
   const [goal, setGoal] = useState<number | null>(null);
   const [started, setStarted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -73,24 +74,25 @@ export default function Home() {
             {variation === "context" && <ContextBackdrop active={active} />}
             {variation === "background" && <div className="full-background" aria-hidden="true">
               {scenes.map((scene, i) => <div key={scene.image} className={`background-scene ${active === i ? "active" : ""}`}>
-                <svg viewBox="0 470 1080 1140" preserveAspectRatio="xMidYMid slice" className="clean-photo">
+                {scene.image === "friends-family.png" ? <img className="context-photo" src="/images/context/friends-family.png" alt="" /> : <svg viewBox="0 470 1080 1140" preserveAspectRatio="xMidYMid slice" className="clean-photo">
                   <image href={`/images/${scene.image}`} width="1080" height="2052" />
-                </svg>
+                </svg>}
               </div>)}
               <div className="full-background-shade" />
             </div>}
     <header className="topbar">
       <img className="wordmark" src="/speakx.svg" alt="SpeakX" width="120" height="32" />
       <div className="header-actions">
+        <Button variant="secondary" className="sign-in" onClick={() => setDialog("signin")}>Sign In</Button>
         <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
           <DropdownMenuTrigger asChild><Button variant="ghost" className="icon-button" aria-label="More options"><MoreVertical /></Button></DropdownMenuTrigger>
           <DropdownMenuPortal container={phonePortal}><DropdownMenuPrimitive.Content align="end" className="options-menu">
-            <DropdownMenuItem onSelect={() => setPaused(v => !v)}>{paused ? <Play /> : <Pause />}{paused ? "Play carousel" : "Pause carousel"}</DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => { go(0); setPaused(false); }}><RotateCcw />Replay from the beginning</DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => setDialog("about")}><Info />About SpeakX</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setDialog("contact")}><Mail />Contact us</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setDialog("faq")}><CircleHelp />FAQ</DropdownMenuItem>
+            <DropdownMenuItem asChild><a href="https://www.speakx.in/privacy-policy" target="_blank" rel="noopener noreferrer"><ShieldCheck />Privacy Policy</a></DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setDialog("about")}><Info />About us</DropdownMenuItem>
           </DropdownMenuPrimitive.Content></DropdownMenuPortal>
         </DropdownMenu>
-        <Button variant="secondary" className="sign-in" onClick={() => setDialog("signin")}>Sign In</Button>
       </div>
     </header>
     <section className="carousel" aria-roledescription="carousel" aria-label="Find your confidence with SpeakX"
@@ -127,8 +129,8 @@ export default function Home() {
         {dialog === "start" ? <>
           <DialogTitle className="dialog-title">{started ? "Your next chapter awaits." : "Where will your confidence take you?"}</DialogTitle>
           <DialogDescription className="dialog-description">{started ? `You chose ${scenes[goal ?? 0].label.toLowerCase()}. This preview ends here — your learning journey is the next step.` : "Choose a place to start. You can always explore more later."}</DialogDescription>
-          {!started ? <><div className="goal-options" role="group" aria-label="Choose your learning goal">{scenes.filter((_, i) => i !== 1).map(scene => { const i = scenes.indexOf(scene); return <Button key={scene.label} variant="secondary" className={`goal-option ${goal === i ? "chosen" : ""}`} aria-pressed={goal === i} onClick={() => setGoal(i)}>{scene.label}{goal === i ? <Check /> : <ChevronRight />}</Button>; })}</div><Button className="primary-cta" disabled={goal === null} onClick={() => setStarted(true)}>Continue <ArrowRight /></Button></> : <Button className="primary-cta" onClick={() => { go(goal ?? 0); setDialog(null); }}>Back to exploring <ArrowRight /></Button>}
-        </> : dialog === "signin" ? <><DialogTitle className="dialog-title">Welcome back.</DialogTitle><DialogDescription className="dialog-description">This is a preview of the SpeakX welcome screen. Account sign-in will be available when connected to the SpeakX app.</DialogDescription><Button className="primary-cta" onClick={() => setDialog(null)}>Keep exploring <ArrowRight /></Button></> : <><DialogTitle className="dialog-title">Confidence for real life.</DialogTitle><DialogDescription className="dialog-description">Build your English confidence with SpeakX — from everyday conversations to your next big opportunity. Swipe to explore the possibilities.</DialogDescription><Button className="primary-cta" onClick={() => setDialog(null)}>Got it <Check /></Button></>}
+          {!started ? <><div className="goal-options" role="group" aria-label="Choose your learning goal">{scenes.map(scene => { const i = scenes.indexOf(scene); return <Button key={scene.label} variant="secondary" className={`goal-option ${goal === i ? "chosen" : ""}`} aria-pressed={goal === i} onClick={() => setGoal(i)}>{scene.label}{goal === i ? <Check /> : <ChevronRight />}</Button>; })}</div><Button className="primary-cta" disabled={goal === null} onClick={() => setStarted(true)}>Continue <ArrowRight /></Button></> : <Button className="primary-cta" onClick={() => { go(goal ?? 0); setDialog(null); }}>Back to exploring <ArrowRight /></Button>}
+        </> : dialog === "signin" ? <><DialogTitle className="dialog-title">Welcome back.</DialogTitle><DialogDescription className="dialog-description">This is a preview of the SpeakX welcome screen. Account sign-in will be available when connected to the SpeakX app.</DialogDescription><Button className="primary-cta" onClick={() => setDialog(null)}>Keep exploring <ArrowRight /></Button></> : <SupportContent panel={dialog} />}
       <DialogClose asChild><button className="dialog-dismiss" aria-label="Close"><X /></button></DialogClose>
         </DialogPrimitive.Content>
       </DialogPortal>

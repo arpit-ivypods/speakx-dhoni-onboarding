@@ -93,7 +93,7 @@
 @media(prefers-reduced-motion:reduce) { .clean-photo { transform: none !important; } }
 
 /* Position the portal in device coordinates, so the menu scales with the phone. */
-.phone-screen [data-radix-popper-content-wrapper] { position: absolute !important; top: 108px !important; right: 88px !important; left: auto !important; transform: none !important; z-index: 40 !important; }
+.phone-screen [data-radix-popper-content-wrapper] { position: absolute !important; top: 108px !important; right: 24px !important; left: auto !important; transform: none !important; z-index: 40 !important; }
 .phone-screen .options-menu { min-width: 240px; background: var(--popover); color: var(--popover-foreground); border: 1px solid var(--border); box-shadow: 0 12px 36px #0008; outline: none; }
 
 /* Variant 3: environmental photos composed for this exact portrait canvas.
@@ -117,3 +117,7 @@
   .variation-tabs-three[data-slot=tabs-list] { width: calc(100vw - 32px); height: 68px; }
   .variation-tabs-three [data-slot=tabs-trigger] { width: 0; min-width: 0; height: 58px; white-space: normal; text-align: center; padding: 4px 8px; }
 }
+
+.support-link { color: #ffb890; text-decoration: underline; text-underline-offset: 4px; font-size: 16px; }
+.support-faq [data-slot=accordion-trigger] { font-size: 16px; line-height: 24px; font-weight: 600; }
+.support-faq [data-slot=accordion-content] { color: var(--muted-foreground); font-size: 16px; line-height: 24px; }
