@@ -9,4 +9,6 @@ Reviewed 14 September 2026. The five FAQ topics are editorial priorities for thi
 - 1 crore+ downloads: Google Play shows 10M+ downloads. This is labelled downloads, not active learners.
 - MS Dhoni as an investor: [SpeakX homepage](https://speakx.in/) lists him among angel investors and links to coverage. The About panel describes his role as investor, not teacher.
 
-The pricing answer is expanded by default. The shared support component applies to all three variants. About us links its two factual trust points to the official website and Google Play so users can check them.
+The shared support component applies to all three variants. Following the product owner’s update, the pricing answer is last, About us has no hyperlinks or free-use line, and Contact us offers an email copy action. The first FAQ is expanded by default. The product owner supplied the addition of 14 other languages; the seven previously verified languages remain named.
+
+The full published privacy policy was retrieved from https://www.speakx.in/privacy-policy on 14 September 2026. Its public content endpoint, discovered in the page script, was https://api-stage.speakx.in/go/biz/v1/get-static-data with params.type PRIVACY_POLICY. The original text is preserved in app/privacy-policy-source.md; the formatted data in app/privacy-policy-data.json retains every policy sentence. Repeated page titles are consolidated. Policy links remain plain text so reading stays inside the app. This bundled snapshot requires updating when the official policy changes.

@@ -178,9 +178,20 @@
 .about-copy { display: grid; gap: 20px; color: var(--muted-foreground); font-size: 16px; line-height: 24px; }
 .about-copy p { margin: 0; }
 .about-proof { display: grid; gap: 14px; border-block: 1px solid var(--border); padding-block: 16px; }
-.about-proof a { display: grid; gap: 2px; border-radius: 4px; }
+.about-proof > div { display: grid; gap: 2px; border-radius: 4px; }
 .about-proof strong { color: #e3e5eb; font-size: 18px; line-height: 26px; font-weight: 600; }
 .about-proof span { display: flex; align-items: center; gap: 6px; color: #ffb890; font-size: 14px; line-height: 20px; }
-.about-proof svg { width: 14px; height: 14px; }
-.about-proof a:hover span { text-decoration: underline; text-underline-offset: 3px; }
-.about-proof a:focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
+
+.contact-email { display: grid; justify-items: start; gap: 12px; }
+.contact-email p { color: #e3e5eb; font-size: 18px; line-height: 26px; user-select: text; overflow-wrap: anywhere; }
+.copy-email[data-slot=button] { min-height: 44px; padding: 10px 16px; border-radius: 999px; font-size: 16px; gap: 8px; }
+.copy-error { color: #ffb890; font-size: 14px; line-height: 20px; }
+.phone-screen .privacy-dialog[data-slot=dialog-content] { height: 740px; overflow: hidden; grid-template-rows: auto auto auto minmax(0, 1fr); gap: 16px; }
+.privacy-dialog .dialog-title { padding-right: 20px; }
+.privacy-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; padding: 0 10px 16px 2px; color: #c3c6d0; font-size: 16px; line-height: 26px; overflow-wrap: anywhere; }
+.privacy-body:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
+.privacy-body section + section { margin-top: 28px; }
+.privacy-body h3 { font-size: 18px; line-height: 26px; font-weight: 600; color: #f3f4f7; margin: 0 0 12px; }
+.privacy-body p { white-space: pre-line; margin: 0 0 16px; }
+.privacy-body ul { list-style: disc; padding-left: 20px; margin: 0 0 16px; }
+.privacy-body li + li { margin-top: 8px; }

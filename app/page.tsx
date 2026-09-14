@@ -109,7 +109,7 @@ export default function Home() {
           <DropdownMenuPortal container={phonePortal}><DropdownMenuPrimitive.Content align="end" className="options-menu">
             <DropdownMenuItem onSelect={() => setDialog("contact")}><Mail />Contact us</DropdownMenuItem>
             <DropdownMenuItem onSelect={() => setDialog("faq")}><CircleHelp />FAQ</DropdownMenuItem>
-            <DropdownMenuItem asChild><a href="https://www.speakx.in/privacy-policy" target="_blank" rel="noopener noreferrer"><ShieldCheck />Privacy Policy</a></DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setDialog("privacy")}><ShieldCheck />Privacy Policy</DropdownMenuItem>
             <DropdownMenuItem onSelect={() => setDialog("about")}><Info />About us</DropdownMenuItem>
           </DropdownMenuPrimitive.Content></DropdownMenuPortal>
         </DropdownMenu>
@@ -144,13 +144,13 @@ export default function Home() {
     <Dialog open={dialogOpen} onOpenChange={open => { if (!open) setDialog(null); }}>
       <DialogPortal container={phonePortal}>
         <DialogOverlay className="phone-overlay" />
-        <DialogPrimitive.Content className="onboarding-dialog" data-slot="dialog-content">
+        <DialogPrimitive.Content className={`onboarding-dialog ${dialog === "privacy" ? "privacy-dialog" : ""}`} data-slot="dialog-content">
         <img src="/speakx.svg" alt="SpeakX" width="104" height="28" className="dialog-logo" />
         {dialog === "start" ? <>
           <DialogTitle className="dialog-title">{started ? "Your next chapter awaits." : "Where do you want to speak English?"}</DialogTitle>
           <DialogDescription className="dialog-description">{started ? `You chose ${scenes[goal ?? 0].label.toLowerCase()}. This preview ends here — your learning journey is the next step.` : "Choose one to start."}</DialogDescription>
           {!started ? <><div className="goal-options" role="group" aria-label="Choose your learning goal">{scenes.map(scene => { const i = scenes.indexOf(scene); return <Button key={scene.label} variant="secondary" className={`goal-option ${goal === i ? "chosen" : ""}`} aria-pressed={goal === i} onClick={() => setGoal(i)}>{scene.label}{goal === i ? <Check /> : <ChevronRight />}</Button>; })}</div><Button className="primary-cta" disabled={goal === null} onClick={() => setStarted(true)}>Continue <ArrowRight /></Button></> : <Button className="primary-cta" onClick={() => { go(goal ?? 0); setDialog(null); }}>Back to exploring <ArrowRight /></Button>}
-        </> : dialog === "signin" ? <><DialogTitle className="dialog-title">Welcome back.</DialogTitle><DialogDescription className="dialog-description">This is a preview of the SpeakX welcome screen. Account sign-in will be available when connected to the SpeakX app.</DialogDescription><Button className="primary-cta" onClick={() => setDialog(null)}>Keep exploring <ArrowRight /></Button></> : <SupportContent panel={dialog} />}
+        </> : dialog === "signin" ? <><DialogTitle className="dialog-title">Welcome back.</DialogTitle><DialogDescription className="dialog-description">This is a preview of the SpeakX welcome screen. Account sign-in will be available when connected to the SpeakX app.</DialogDescription><Button className="primary-cta" onClick={() => setDialog(null)}>Keep exploring <ArrowRight /></Button></> : <SupportContent key={dialog} panel={dialog} />}
       <DialogClose asChild><button className="dialog-dismiss" aria-label="Close"><X /></button></DialogClose>
         </DialogPrimitive.Content>
       </DialogPortal>

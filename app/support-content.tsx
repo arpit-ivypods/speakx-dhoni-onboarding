@@ -1,27 +1,43 @@
 "use client";
 
-import { ArrowUpRight, Mail } from "lucide-react";
+import { useState } from "react";
+import { Copy, Check } from "lucide-react";
+import { PrivacyPolicy } from "./privacy-policy";
 import { Button } from "@/components/ui/button";
 import { DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
-export type SupportPanel = "contact" | "faq" | "about";
+export type SupportPanel = "contact" | "faq" | "about" | "privacy";
 
 const questions = [
-  { question: "Is SpeakX free or paid?", answer: "You can use SpeakX for free. Some extra features need a paid plan. Upgrading is optional." },
-  { question: "Can I start with basic English?", answer: "Yes. You can start with the English you know. Get help in Hindi, Tamil, Telugu, Kannada, Malayalam, Marathi or Bengali." },
+  { question: "Can I start with basic English?", answer: "Yes. You can start with the English you know. Get help in Hindi, Tamil, Telugu, Kannada, Malayalam, Marathi or Bengali, plus 14 other languages." },
   { question: "Who will I practise speaking with?", answer: "You’ll talk with Sia, an AI practice partner in the app. Make mistakes, try again and get feedback to improve your English. You don’t need to find a speaking partner." },
   { question: "Can I practise for interviews and daily life?", answer: "Yes. Practise conversations for job interviews, work, college, travel, and talking with friends and family." },
   { question: "How much time should I practise?", answer: "Aim for about 15 minutes a day, at a time that suits you. Everyone learns at a different pace. Use your Progress Report to see what’s improving and what to practise next." },
+  { question: "Is SpeakX free or paid?", answer: "You can use SpeakX for free. Some extra features need a paid plan. Upgrading is optional." },
 ];
 
 export function SupportContent({ panel }: { panel: SupportPanel }) {
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">("idle");
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText("contact@ivypods.com");
+      setCopyStatus("copied");
+    } catch { setCopyStatus("error"); }
+  };
+  if (panel === "privacy") return <>
+    <DialogTitle className="dialog-title">Privacy Policy</DialogTitle>
+    <DialogDescription className="dialog-description">How we collect, use and protect your information.</DialogDescription>
+    <PrivacyPolicy />
+  </>;
   if (panel === "contact") return <>
     <DialogTitle className="dialog-title">Contact us</DialogTitle>
     <DialogDescription className="dialog-description">Have a question or need a hand? Get in touch with the SpeakX team.</DialogDescription>
-    <a className="support-link" href="mailto:contact@ivypods.com">contact@ivypods.com</a>
-    <Button asChild className="primary-cta"><a href="mailto:contact@ivypods.com">Email us <Mail /></a></Button>
-    <a className="support-link" href="https://www.speakx.in/contact-us" target="_blank" rel="noopener noreferrer">More ways to contact us</a>
+    <div className="contact-email">
+      <p>contact@ivypods.com</p>
+      <Button variant="secondary" className="copy-email" onClick={copyEmail}>{copyStatus === "copied" ? <Check /> : <Copy />}{copyStatus === "copied" ? "Copied" : "Copy email"}</Button>
+      <span role="status" className={copyStatus === "error" ? "copy-error" : "sr-only"}>{copyStatus === "copied" ? "Email address copied." : copyStatus === "error" ? "Copy didn’t work. Select and copy the email address above." : ""}</span>
+    </div>
   </>;
 
   if (panel === "faq") return <>
@@ -39,13 +55,11 @@ export function SupportContent({ panel }: { panel: SupportPanel }) {
     <DialogTitle className="dialog-title">About us</DialogTitle>
     <DialogDescription className="dialog-description">Made in India to help you speak English with confidence—in interviews, at work and in everyday life.</DialogDescription>
     <div className="about-copy">
-      <p>SpeakX is built by Ivypods Technology Private Limited, an Indian company. Practise with Sia, your AI speaking partner, and get help in seven Indian languages.</p>
+      <p>SpeakX is built by Ivypods Technology Private Limited, an Indian company. Practise with Sia, your AI speaking partner, and get help in seven Indian languages, plus 14 other languages.</p>
       <div className="about-proof">
-        <a href="https://play.google.com/store/apps/details?id=yellowclass.kids.live" target="_blank" rel="noopener noreferrer"><strong>1 crore+ downloads</strong><span>On Google Play <ArrowUpRight aria-hidden="true" /></span></a>
-        <a href="https://speakx.in/" target="_blank" rel="noopener noreferrer"><strong>Backed by MS Dhoni</strong><span>An investor in SpeakX <ArrowUpRight aria-hidden="true" /></span></a>
+        <div><strong>1 crore+ downloads</strong><span>On Google Play</span></div>
+        <div><strong>Backed by MS Dhoni</strong><span>An investor in SpeakX</span></div>
       </div>
-      <p>You can use SpeakX for free. Paid upgrades are optional.</p>
     </div>
-    <Button asChild className="primary-cta"><a href="https://speakx.in/" target="_blank" rel="noopener noreferrer">Visit our website <ArrowUpRight /></a></Button>
   </>;
 }
