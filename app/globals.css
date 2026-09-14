@@ -174,3 +174,13 @@
 .image-test-control [data-slot=native-select-wrapper], .image-test-control select { width: 100%; }
 .image-test-control select { min-height: 36px; font-size: 13px; background-color: #1d1e25; color: #e3e5eb; }
 .image-test-control p { margin: 5px 0 0; min-height: 16px; font-size: 11px; line-height: 16px; color: #babfcc; }
+
+.about-copy { display: grid; gap: 20px; color: var(--muted-foreground); font-size: 16px; line-height: 24px; }
+.about-copy p { margin: 0; }
+.about-proof { display: grid; gap: 14px; border-block: 1px solid var(--border); padding-block: 16px; }
+.about-proof a { display: grid; gap: 2px; border-radius: 4px; }
+.about-proof strong { color: #e3e5eb; font-size: 18px; line-height: 26px; font-weight: 600; }
+.about-proof span { display: flex; align-items: center; gap: 6px; color: #ffb890; font-size: 14px; line-height: 20px; }
+.about-proof svg { width: 14px; height: 14px; }
+.about-proof a:hover span { text-decoration: underline; text-underline-offset: 3px; }
+.about-proof a:focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
